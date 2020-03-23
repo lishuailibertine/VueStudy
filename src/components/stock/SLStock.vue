@@ -20,22 +20,27 @@ export default {
         handle:function(){
             alert("dsd");
         },
-        getData:function(data){
-             this.items =data;
+        getData:function(code){
+            return new Promise(resolve=>{
+            Axios.get("http://www.zx017.net/api/GetStockInfo",{
+                params:{code:code}
+            }).then(function(res){
+                resolve(res.data.data);
+            }).catch(function(error){
+                reject(error);
+            });
+           });
+        },
+        async requestData(code){
+           await this.getData(code).then(res=>{
+                console.log("");
+                this.items =res;
+            });
         }
     },
     created(){
-        const that = this;
-        Axios.get("http://www.zx017.net/api/GetStockInfo",{
-            params:{
-            code:'600036'
-        }
-        }).then(function(res){
-            that.getData(res.data.data);
-
-      }).catch(function (error) {
-        console.log(error);
-    });
+        var code = "600036";
+         this.requestData(code);
     }
 }
 </script>
