@@ -14,15 +14,16 @@ import Axios from "axios";
 export default {
     name: 'SLStock',
     data(){
-        return {items:[]}
+        return {code:'',url:"",items:[],timer:''}
     },
     methods:{
         handle:function(){
             alert("dsd");
         },
         getData:function(code){
+            const that = this;
             return new Promise(resolve=>{
-            Axios.get("http://www.zx017.net/api/GetStockInfo",{
+            Axios.get(that.url,{
                 params:{code:code}
             }).then(function(res){
                 resolve(res.data.data);
@@ -33,14 +34,24 @@ export default {
         },
         async requestData(code){
            await this.getData(code).then(res=>{
-                console.log("");
+                console.log(res[0].Price);
                 this.items =res;
             });
         }
     },
     created(){
-        var code = "600036";
-         this.requestData(code);
+        this.code = "600036";
+        const that = this;
+        this.url = "http://www.zx017.net/api/GetStockInfo";
+        this.timer = setInterval(function(){
+            that.requestData(that.code);
+        }, 1000);
+    },
+    mounted(){
+        console.log("html加载完成后执行。执行顺序：子组件-父组件");
+    },
+    beforeDestory(){
+       clearInterval(this.timer);
     }
 }
 </script>

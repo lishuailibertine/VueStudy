@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <!-- <img src="./assets/logo.png"> -->
+     <p>
+    <router-link to="/SLStock">{{"股票"}}</router-link>
+    <router-link to="/HelloWorld">{{"helloworld"}}</router-link>
+  </p>
     <router-view/>
   </div>
 </template>
